@@ -1,0 +1,585 @@
+---
+title: "Intro-R-Rstudio"
+author: "Britta Schumacher"
+date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  html_document:
+    theme: yeti
+    toc: yes
+    toc_float: true
+---
+
+*FIRST*: Many thanks to UCSB Data Carpentry's Intro to R & RStudio [lesson](https://ucsbcarpentry.github.io/2021-08-16-ucsb-introR-online/), which helped immensely in preparing this document.
+
+# **Basic layout**
+
+### When you first open RStudio, you will be greeted by three panels:
+
+- The interactive R console (entire left)
+- Environment/History (tabbed in upper right)
+- Files/Plots/Packages/Help/Viewer (tabbed in lower right)
+
+<center>
+
+![](https://ucsbcarpentry.github.io/2021-08-16-ucsb-introR-online/fig/01-rstudio.png)
+
+</center>
+
+### Once you open files, such as R scripts, an editor panel will also open in the top left.
+
+<center>
+
+![](https://ucsbcarpentry.github.io/2021-08-16-ucsb-introR-online/fig/01-rstudio-script.png)
+
+</center>
+
+# Workflow within RStudio
+
+There are two main ways one can work within RStudio.
+
+1. Test and play within the interactive R console then copy code into a .R file to run later. (This is a real labor.... and I do NOT recommend it!)
+2. Start writing in an .R file and use RStudio’s shortcut keys for the Run command to push the current line, selected lines or modified lines to the interactive R console. (This is a great way to use R/RStudio cause all of your code is saved & you'll be able to run the file later on!)
+
+# Let's get to know the R interactive console
+
+(We will be typing everything below directly into the R console, but I have included them as code chunks for KEY purposes!)
+
+### Use R as a calculator
+
+Remember, order of operations matters--the order is the same as you would have learned back in school:
+
+From highest to lowest precedence:
+
+- Parentheses: `(`, `)`
+- Exponents: `^` or `**`
+- Divide: `/`
+- Multiply: `*`
+- Add: `+`
+- Subtract: `-`
+
+```{r}
+1 + 100
+
+3 + 5 * 2
+
+(3 + 5) * 2 # text after each code line is called a "comment"; R ignores anything that follows the # mark
+
+2/10000 # shorthand for “multiplied by 10^XX”. So 2e-4 is shorthand for 2 * 10^(-4).
+
+# 1 +
+```
+
+Any time you hit return and the R session shows a “+” instead of a “>”, it means it’s waiting for you to complete the command. If you want to cancel a command you can simply hit “`Esc`” or "`Ctrl`"+"`C`" and RStudio will give you back the “>” prompt.
+
+### Use R to compare things
+```{r}
+1 == 1  # equality (note two equals signs, read as "is equal to")
+
+1 != 2  # inequality (read as "is not equal to")
+
+1 < 2  # less than
+
+1 <= 1  # less than or equal to
+```
+
+### Use R to assign variables
+```{r}
+x <- 1/40
+x
+
+x <- 1/40 # variables can easily be re-assigned/over-written
+y <- x * 2
+```
+
+Variable names can contain letters, numbers, underscores and periods. They CANNOT start with a number OR contain spaces (**at all**). A few different conventions for longer variable names:
+
+- periods.between.words
+- underscores_between_words
+- camelCaseToSeparateWords
+
+Your choice of convention is up to , *JUST BE CONSISTENT*.
+
+# Installing packages
+
+Collections of R code that make our lives easier--for example, code developed to wrangle data--are known as *R packages*. These packages are not automatically downloaded when we download R, and must be installed. Either through the GUI interface (Tools --> Install Packages), or in-line in the console using `install.packages()`.
+
+```{r}
+# install.packages("dplyr")
+```
+
+Once we've downloaded a package, we can use it! R doesn't keep all packages in its working memory, however--it would slow R down to a snail's pace. Instead, we need to "load" the package(s) we are interested in using into our R session. We have to load these package(s) into our R session *each time we open R (or RStudio)*.
+
+```{r}
+library(dplyr)
+```
+
+# Project Management with RStudio
+
+I don't know about y'all, but many of my projects have looked a bit like this:
+
+<center>
+
+![](https://ucsbcarpentry.github.io/2021-08-16-ucsb-introR-online/fig/bad_layout.png)
+
+</center>
+
+.... with multiple iterations of graphs, manuscripts, and tables, all labeled with the date I completed them. This kind of organization is.... MESSY.
+
+Luckily for us, RStudio's project management functionality is INTUITIVE and POWERFUL.
+
+### We’re going to create a new project in RStudio:
+
+1. Click the “File” menu button, then “New Project”.
+2. Click “New Directory”.
+3. Click “Empty Project”.
+4. Type in “r-intro” as the name of the directory.
+5. Click the “Create Project” button.
+
+Every time you open this project our working directory will always be set to the folder `r-intro`!
+
+```{r}
+#getwd()
+```
+
+# Data Types
+
+There are 6 main types: `numeric`, `integer`, `complex`, `logical`, `character`, and `factor`.
+
+```{r}
+class(3.14)
+
+class(1L) # The L suffix forces the number to be an integer, since by default R uses float numbers
+
+class(1+1i)
+
+class(TRUE)
+
+class('banana')
+
+class(factor('banana'))
+```
+
+No matter how complicated our analyses, or data become, R will always interpret the data as a specific data class. This strict interpretation has important implications. For instance, R insists that everything in a column be the same class; if it can't understand *everything* in a column as numeric, then *nothing* in that column gets to be numeric.
+
+# Vectors and Type Coercion
+
+Before we load in our first .csv, let's meet a different data structure: the vector. A vector in R is essentially an ordered list of things, of the same basic data type. If you don’t choose the data type, it’ll default to logical; or, you can declare an empty vector of whatever type you like. You can also make vectors with explicit contents using the combine function `c()`.
+
+```{r}
+my_vector <- vector(length = 3)
+my_vector
+
+another_vector <- vector(mode = 'character', length = 3)
+another_vector
+
+combine_vector <- c(2, 6, 3)
+combine_vector
+```
+
+The combine function `c()` will also append an existing vector...
+
+```{r}
+ab <- c('a', 'b')
+ab
+
+c <- c(ab, 'DC')
+c
+```
+
+Or we can make a series of numbers...
+
+```{r}
+my_series <- 1:10
+my_series
+
+seq(1,10, by = 0.1)
+```
+
+# Factors
+
+Factors look like character data, but are used to represent categorical information. For example, let’s make a vector of strings labeling different nordic countries of interest:
+
+```{r}
+nordic_countries <- c('Norway', 'Finland', 'Denmark', 'Iceland', 'Sweden')
+nordic_countries
+
+str(nordic_countries) # what is the structure/data type...
+
+categories <- factor(nordic_countries) # let's coerce our character vector into a factor
+class(categories)
+```
+
+# Exploring Data Frames
+
+So... what is a dataframe? Think of it like a big ole excel sheet, but housed in R in a very specific way: Where all columns must be of the same type (think... vectors). Dataframes can be massive (think thousands of columns of genetic data), or relatively small, think a dozen columns of information relevant to your research study. Today we are going to work with an R dataset called `gapminder`.
+
+```{r}
+download.file("https://raw.githubusercontent.com/datacarpentry/r-intro-geospatial/master/_episodes_rmd/data/gapminder_data.csv",
+              destfile = "data/gapminder_data.csv")
+gapminder <- read.csv("data/gapminder_data.csv")
+```
+
+Let's check out the data! Data exploration is one of the most important parts of working in R--and it's the first thing you should always do when looking at new data!
+```{r}
+str(gapminder) # str() shows us the structure of the data, including the data type, the dimensions of the dataframe, and a few observations
+
+# we can also examine individual columns using class
+class(gapminder$year) 
+class(gapminder$country)
+str(gapminder$country)
+
+# str(gapminder) said there were 1704 observations of 6 variables.... what will length(gapminder) produce and why?
+length(gapminder) # a fair guess woudl have been the length of the dataframe, 1704, but it gives the number of columns
+
+class(gapminder)
+
+# to get the number of rows, try:
+nrow(gapminder)
+
+# number of columns:
+ncol(gapminder)
+
+# or both at once, dim()
+dim(gapminder)
+
+# we are going to need to know the names of the columns later, so:
+colnames(gapminder)
+
+# It's a good time to ask ourselves when the structure R is reporting matches our intuitions: does the data type for each column make sense? If not, we need to sort out those issues now so we don't run into issues down the road. Once we're happy with our data types, we can really start digging into our data!
+head(gapminder)
+```
+
+### Adding columns and rows in data frames
+
+Let's create a new column to hold information on whether life expectancy is below the world average (70.5), or above:
+```{r}
+below_average <- gapminder$lifeExp < 70.5
+head(gapminder)
+
+# we've simply created a vector with TRUE/FALSE values; but we can add this to our dataframe using
+#cbind(gapminder, below_average)
+
+# we definitely don't want to print the entire dataframe each time, so let's put our cbind() command within a call to head() so we only see the first six lines
+head(cbind(gapminder, below_average))
+
+# note that if we try to add a vector of below_average with a different number of entries than the number of rows in our dataframe, it woudl fail:
+#below_average <- c(TRUE, TRUE, TRUE, TRUE, TRUE)
+#head(cbind(gapminder, below_average))
+
+# why didn't this work? R wants to see one element in our new column for every row in the table:
+nrow(gapminder)
+length(below_average)
+
+# So for it to work we need either to have nrow(gapminder) = length(below_average) or nrow(gapminder) to be a multiple of length(below_average):
+below_average <- c(TRUE, TRUE, FALSE)
+head(cbind(gapminder, below_average))
+
+# The sequence TRUE,TRUE,FALSE is repeated over all the gapminder rows.
+
+# Let’s overwite the content of gapminder with our new data frame.
+below_average <-  as.logical(gapminder$lifeExp<70.5)
+gapminder <- cbind(gapminder, below_average)
+
+# how about adding rows?
+new_row <- list('Norway', 2016, 5000000, 'Nordic', 80.3, 49400.0, FALSE)
+gapminder_norway <- rbind(gapminder, new_row)
+tail(gapminder_norway)
+
+```
+
+Why did R give us a warning? Well.. we need to talk a bit more about factors....
+
+In a factor, each different value represents what is called a **level**. In our case, the factor “continent” has 5 levels: “Africa”, “Americas”, “Asia”, “Europe” and “Oceania”. R will only accept values that match one of the levels. If you add a new value, it will become NA.
+
+The warning is telling us that we unsuccessfully added “Nordic” to our continent factor, but 2016 (a numeric), 5000000 (a numeric), 80.3 (a numeric), 49400.0 (a numeric) and FALSE (a logical) were successfully added to country, year, pop, lifeExp, gdpPercap and below_average respectively, since those variables are not factors. ‘Norway’ was also successfully added since it corresponds to an existing level. To successfully add a gapminder row with a “Nordic” continent, add “Nordic” as a level of the factor:
+
+```{r}
+levels(gapminder$continent)
+
+levels(gapminder$continent) <- c(levels(gapminder$continent), "Nordic")
+gapminder_norway  <- rbind(gapminder,
+                           list('Norway', 2016, 5000000, 'Nordic', 80.3,49400.0, FALSE))
+
+tail(gapminder_norway)
+
+# Alternatively, we can change a factor into a character vector; we lose the handy categories of the factor, but we can subsequently add any word we want to the column without babysitting the factor levels:
+str(gapminder)
+
+gapminder$continent <- as.character(gapminder$continent)
+str(gapminder)
+```
+
+The key to remember when adding data to a data frame is that columns are vectors and rows are lists. We can also glue two data frames together with rbind:
+```{r}
+gapminder <- rbind(gapminder, gapminder)
+tail(gapminder, n=3)
+
+# But now the row names are unnecessarily complicated (not consecutive numbers). We can remove the rownames, and R will automatically re-name them sequentially:
+rownames(gapminder) <- NULL
+head(gapminder)
+```
+
+# Subsetting Data
+
+Now we are going to learn Rs really powerful subset operators. Let's start with a simple numeric vector:
+
+```{r}
+x <- c(5.4, 6.2, 7.1, 4.8, 7.5)
+names(x) <- c('a', 'b', 'c', 'd', 'e')
+x
+
+# So now that we’ve created a dummy vector to play with, how do we get at its contents?
+# To extract elements of a vector we can give their corresponding index, starting from one:
+x[1]
+x[4]
+# It may look different, but the square brackets operator is a function. For vectors (and matrices), it means “get me the nth element”.
+
+#We can ask for multiple elements at once:
+x[c(1, 3)]
+
+# we can also ask for slices
+x[1:4]
+
+# the : operator creates a sequence of numbers from the left element to the right.
+
+# we can also ask for the same element multiple times
+x[c(1, 1, 3)]
+
+# If we ask for an index beyond the length of the vector, R will return a missing value:
+x[6] # This is a vector of length one containing an NA, whose name is also NA.
+
+x[0] # In many programming languages (C and Python, for example), the first element of a vector has an index of 0. In R, the first element is 1.
+
+
+```
+
+### Skipping and removing elements
+
+```{r}
+# If we use a negative number as the index of a vector, R will return every element except for the one specified:
+x[-2]
+
+# we can skip multiple elements
+x[c(-1, -5)]  # or 
+x[-c(1,5)]
+
+# a common mistake would be to ask R
+#x[-1:3] # But remember the order of operations. : is really a function. It takes its first argument as -1, and its second as 3, so generates the sequence of numbers: c(-1, 0, 1, 2, 3).
+
+x[-(1:3)]
+
+# To remove elements from a vector, we need to assign the result back into the variable:
+x <- x[-4]
+x
+```
+
+### Subsetting by name
+
+```{r}
+# We can extract elements by using their name, instead of extracting by index:
+x <- c(a = 5.4, b = 6.2, c = 7.1, d = 4.8, e = 7.5) # we can name a vector 'on the fly'
+x[c("a", "c")]
+
+# we can also use logical vectors to subset
+x[c(FALSE, FALSE, TRUE, FALSE, TRUE)]
+
+# Since comparison operators (e.g. >, <, ==) evaluate to logical vectors, we can also use them to succinctly subset vectors: the following statement gives the same result as the previous one.
+x[x > 7] # this statement first evaluates x>7, generating a logical vector c(FALSE, FALSE, TRUE, FALSE, TRUE), and then selects the elements of x corresponding to the TRUE values.
+
+# We can use == to mimic the previous method of indexing by name (remember you have to use == rather than = for comparisons):
+x[names(x) == "a"]
+```
+
+# Subsetting Dataframes
+
+Remember the data frames are lists underneath the hood, so similar rules apply. However, they are also two dimensional objects:
+
+`[` with one argument will act the same way as for lists, where each list element corresponds to a column. The resulting object will be a data frame:
+
+```{r}
+head(gapminder[3])
+
+# Similarly, [[ will act to extract a single column:
+head(gapminder[["lifeExp"]])
+
+# And $ provides a convenient shorthand to extract columns by name:
+head(gapminder$year)
+
+# To select specific rows and/or columns, you can provide two arguments to [
+gapminder[1:3, ]
+
+# If we subset a single row, the result will be a data frame (because the elements are mixed types):
+gapminder[3, ]
+```
+
+#### Challenge: Fix the following subsetting errors:
+
+1. Extract observations collected for the year 1957
+```{r}
+# gapminder[gapminder$year = 1957, ]
+## gapminder[gapminder$year == 1957, ]
+```
+
+2. Extract all columns except 1 through to 4
+```{r}
+# gapminder[, -1:4]
+## gapminder[,-c(1:4)]
+```
+
+3. Extract the rows where the life expectancy is longer the 80 years
+```{r}
+# gapminder[gapminder$lifeExp > 80]
+## gapminder[gapminder$lifeExp > 80,]
+```
+
+# Data frame Manipulation with dplyr
+```{r}
+# now that we've downloaded the data, let's read it into our global environment!
+gapminder <- read.csv("data/gapminder_data.csv")
+```
+
+Manipulation of dataframes means many things to many researchers, we often select certain observations (rows) or variables (columns), we often group the data by a certain variable(s), or we even calculate summary statistics. We can do these operations using the normal base R operations:
+```{r}
+mean(gapminder[gapminder$continent == "Africa", "gdpPercap"])
+
+mean(gapminder[gapminder$continent == "Americas", "gdpPercap"])
+
+mean(gapminder[gapminder$continent == "Asia", "gdpPercap"])
+```
+
+But this isn’t very efficient, and can become tedious quickly because there is a fair bit of repetition. Repeating yourself will cost you time, both now and later, and potentially introduce some nasty bugs.
+
+Luckily, the dplyr package provides a number of very useful functions for manipulating dataframes in a way that will reduce the above repetition, reduce the probability of making errors, and probably even save you some typing. As an added bonus, you might even find the dplyr grammar easier to read.
+
+Here we’re going to cover 6 of the most commonly used functions as well as using pipes (%>%) to combine them.
+
+- `select()`
+- `filter()`
+- `group_by()`
+- `summarize()`
+- `mutate()`
+
+```{r}
+library(dplyr)
+```
+
+What if we only wanted a few of the variables in our dataframe? This is where `select` comes in!
+
+```{r}
+year_country_gdp <- select(gapminder, year, country, gdpPercap)
+```
+
+the strengths of dplyr lie in combining several functions using pipes. Since the pipes grammar is unlike anything we’ve seen in R before, let’s repeat what we’ve done above using pipes.
+
+```{r}
+year_country_gdp <- gapminder %>% select(year,country,gdpPercap)
+```
+
+First we summon the gapminder data frame and pass it on, using the pipe symbol %>%, to the next step, which is the `select()` function. In this case we don’t specify which data object we use in the `select()` function since in gets that from the previous pipe. Fun Fact: You may have encountered pipes before in the shell. In R, a pipe symbol is %>% while in the shell it is | but the concept is the same!
+
+What if we are interested in only European countries, and those three variables; this is where 'filter' comes in!
+```{r}
+year_country_gdp_euro <- gapminder %>%
+  filter(continent == "Europe") %>%
+  select(year, country, gdpPercap)
+```
+
+#### Challenge: Write a single command (which can span multiple lines and includes pipes) that will produce a dataframe that has the African values for lifeExp, country and year, but not for other Continents. How many rows does your dataframe have and why?
+
+```{r}
+year_country_lifeExp_Africa <- gapminder %>%
+                           filter(continent=="Africa") %>%
+                           select(year,country,lifeExp)
+```
+
+The order of operations is very important in this case. If we used `select` first, filter would not be able to find the variable continent since we would have removed it in the previous step.
+
+The power of dplyr is that you don't have to do repetetive tasks that might produce bugs in your code; thus far we haven't been using this functionality... we would have to make a new dataframe for each country... this is where `group_by()` steps in!
+
+```{r}
+# let's first look at the structure of gapminger
+str(gapminder)
+
+# now let's group the dataframe by continent and look at it again
+gapminder %>% group_by(continent) %>% str()
+```
+
+The data is now in a grouped_df, not the same as the data.frame we originally saw. The grouped_df is essentially a list where each item in the list is its own dataframe which only contains the rows that correspond to a particular value of continent.
+
+Using `group_by()` can seem pretty uneventful... that's because `group_by()` simply holds onto the data, you have to pass other functions to it in order to really see its power. We'll use `summarise()` which allows us to create new variables by using functions that repeat for each of the grouped datasets.
+
+```{r}
+gdp_bycontinents <- gapminder %>%
+  group_by(continent) %>%
+  summarize(mean_gdpPercap = mean(gdpPercap))
+
+gdp_bycontinents
+```
+
+The function `group_by()` allows us to group by multiple variables. Let’s group by year and continent.
+
+```{r}
+gdp_bycontinents_byyear <- gapminder %>%
+  group_by(continent, year) %>%
+  summarize(mean_gdpPercap = mean(gdpPercap))
+
+# Cool, but what if we want to look at multiple variables across space-time?
+gdp_pop_bycontinents_byyear <- gapminder %>%
+  group_by(continent,year) %>%
+  summarize(mean_gdpPercap = mean(gdpPercap),
+            sd_gdpPercap = sd(gdpPercap),
+            mean_pop = mean(pop),
+            sd_pop = sd(pop))
+```
+
+A very common operation is to `count` the number of observations for each group:
+
+```{r}
+gapminder %>%
+    filter(year == 2002) %>%
+    count(continent, sort = TRUE)
+```
+
+If we need to use the number of observations in calculations, the `n()` function is useful. For instance, if we wanted to get the standard error of the life expectancy per continent:
+
+```{r}
+gapminder %>%
+    group_by(continent) %>%
+    summarize(se_le = sd(lifeExp)/sqrt(n()))
+
+```
+
+You can also chain together several summary operations; in this case calculating the minimum, maximum, mean and se of each continent’s per-country life-expectancy:
+
+```{r}
+gapminder %>%
+    group_by(continent) %>%
+    summarize(
+      mean_le = mean(lifeExp),
+      min_le = min(lifeExp),
+      max_le = max(lifeExp),
+      se_le = sd(lifeExp)/sqrt(n()))
+```
+
+We can also create new variables prior to (or even after) summarizing information using mutate().
+```{r}
+gdp_sum <- gapminder %>%
+  mutate(gdp_billion = gdpPercap*pop/10^9) %>%
+  group_by(continent, year) %>%
+  summarize(mean_gdpPercap = mean(gdpPercap),
+            sd_gdpPercap = sd(gdpPercap),
+            mean_pop = mean(pop),
+            sd_pop = sd(pop),
+            mean_gdp_billion = mean(gdp_billion),
+            sd_gdp_billion = sd(gdp_billion))
+```
+
+# Data Writing/Saving
+
+One of the key elements of "good" data practices is NEVER to over-write raw data. Raw-data is sacred, and needs to exist in your project in its OG format. Manipulated data is important to save as well. You might place these data in folders called `analysis-data` or `data-out`; regardless of what you call this folder, you will always save manipulated data to this folder!
+
+```{r}
+write.csv(gdp_sum, "./data/data-out/gdp-summary-stats.csv")
+saveRDS(gdp_sum, "data/data-out/gdp-summary-stats.RSD")
+```
+
