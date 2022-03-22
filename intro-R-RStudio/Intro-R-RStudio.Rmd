@@ -1,5 +1,5 @@
 ---
-title: "Intro-R-Rstudio"
+title: "Introduction to R and RStudio Workshop"
 author: "Britta Schumacher"
 date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
 output: 

@@ -1,5 +1,5 @@
 ---
-title: "CAS tidyverse() Workshop"
+title: "Data Manipulation in R: Introduction to the {tidyverse} Workshop"
 author: "Britta Schumacher"
 date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
 output: 
@@ -9,27 +9,27 @@ output:
     toc_float: true
 ---
 
-*FIRST*: Many thanks to An Bui & Sam Csik's tidyverse() [tutorial](https://github.com/samanthacsik/Intro-to-the-Tidyverse), Dr. Simona Picardi's tidyverse [chapter](https://ecorepsci.github.io/reproducible-science/tidyverse.html), & Dr. Alison Horst's tidyverse [aRt](https://github.com/allisonhorst/stats-illustrations) which helped immensely in preparing this document.
+*FIRST*: Many thanks to An Bui & Sam Csik's `tidyverse` [tutorial](https://github.com/samanthacsik/Intro-to-the-Tidyverse), Dr. Simona Picardi's `tidyverse` [chapter](https://ecorepsci.github.io/reproducible-science/tidyverse.html), & Dr. Alison Horst's `tidyverse` [aRt](https://github.com/allisonhorst/stats-illustrations) which helped immensely in preparing this document.
 
-# Data Wrangling with the tidyverse()
+# Data Wrangling with the `tidyverse`
 
-### What is the tidyverse()?
+### What is the `tidyverse`?
 
 <center>
 
-![Artwork by the *incredible* Alison Horst](media/tidyverse_AHorst.jpg)
+![Artwork by Alison Horst](media/tidyverse_AHorst.jpg)
 
 </center>
 
-The `tidyverse()` is the bread and butter of data tidying, cleaning, organizing, manipulating, etc. It's a toolkit designed for [data science](https://r4ds.had.co.nz/introduction.html) that opens up a world collaboration and reproducibility. Because all of the packages contained within the tidyverse() share an underlying philosophy, grammar, and data structure, it's easy to streamline data manipulation and visualization with confidence across multiple, unrelated datasets. Read more about this incredible toolkit [here](https://www.tidyverse.org/)!
+The `tidyverse` is the bread and butter of data tidying, cleaning, organizing, and manipulating. It's a toolkit designed for [data science](https://r4ds.had.co.nz/introduction.html) that opens up our world to simple collaboration and robust reproducibility. Because all of the packages contained within the `tidyverse` share an underlying philosophy, grammar, and data structure, it's easy to streamline data manipulation and visualization with confidence across multiple, unrelated datasets. Read more about this incredible toolkit [here](https://www.tidyverse.org/).
 
-The *core* tidyverse() includes the following packages:
+The *core* `tidyverse` collection includes the following packages:
 
 * `dplyr` for data manipulation;
     + **primary functions**: arrange(), filter(), group_by(), mutate(), select(), summarize()
 * `tidyr` for transforming data to a tidy format;
-    + **primary functions**: gather() spread()
-*`readr` for reading in rectangular data (e.g., .csv);
+    + **primary functions**: gather(), spread()
+* `readr` for reading in rectangular data (e.g., .csv);
     + **primary functions**: read_csv(), readRDS()
 * `ggplot2` for plotting/graphics;
     + there is **SO MUCH** to cover, here; [this](https://r4ds.had.co.nz/data-visualisation.html) is a good place to start (Wickam & Grolemund 2017)
@@ -41,13 +41,16 @@ The *core* tidyverse() includes the following packages:
     + **primary functions**: map()
 * `forcats` for working with categorical variables;
     + **primary functions**: fct_reorder(), fct_infreq(), fct_relevel(), fct_lump()
-* `magrittr` for sequential modification of a data frafme;
+* `magrittr` for sequential modification of a data frame;
     + **primary functions**: %>%
 
-These are all distinct packages, and must be installed and loaded separately, but again, share common grammar, syntax, and data structures, which facilitates programming across them and integrating them into common workflows. 
+These core packages are loaded automatically with `library(tidyverse)`. There are many other packages with specialized uses included in the `tidyverse()` suite that are not automatically loaded, and must be loaded separately with `library(package_name)`. We covered various of these specialized packages when we discussed R's data import capabilities (e.g., `readxl` for .xls and .xlsx sheets, `haven` for SPSS, STATA, and SAS data).
+
+Though these packages must be loaded into our environment separately, they again, share common grammar, syntax, and data structures, which facilitates programming across them and integrating them into common workflows. 
 
 ### Load the tidyverse()
 ```{r}
+## install.packages("tidyverse")
 library(tidyverse)
 ```
 
@@ -84,7 +87,7 @@ head(beaver_data) # view first 10 rows of beaver_data
 Before we do anything else, we'll first want to transform 'beaver_data' into a [tidy](https://r4ds.had.co.nz/tidy-data.html) (long) format. [Tidy data](https://www.openscapes.org/blog/2020/10/12/tidy-data/) follows three general rules: 1) variables are in columns (THINK: YEAR, AGE, INCOME, etc.), 2) observations are in rows (THINK: COUNTY, RESPONDENT,), and 3) values are in cells (THINK: COUNT, USD$, CATEGORIES). Having tidy data allows us to use the same tools in similar ways for different datasets... which means we don't have to reinvent the wheel every time we do analyses, but can translate code/knowledge about toolsets to perform similar tasks on different data. We can't do this with messy data.
 
 <center>
-![Artwork by the *incredible* Alison Horst](media/tidydata_AHorst.jpg)
+![Artwork by Alison Horst](media/tidydata_AHorst.jpg)
 
 </center>
 
@@ -109,7 +112,7 @@ back_to_wide <- tidy_beaver %>%
 
 From here on, we'll be working with our **tidy data** i.e. **`tidy_beaver`** to practice some useful wrangling functions. But first, an interlude about [wrangling](https://rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf). 
 
-[Data wrangling](https://r4ds.had.co.nz/wrangle-intro.html) refers to the art of getting your data into R in a useful form for visualization and modeling. & it is *definitely* an art...and a science...and sometimes takes some brute force...think dancing with a big ole' bison who'd really like to pierce you, on rollerskates, while trying to cross stitch. It can be a LOT of work; a LOT of HARD work. But `tidyverse()`  and our use of tidy datasets have made this work MUCH, MUCH more predictable and user-friendly.
+[Data wrangling](https://r4ds.had.co.nz/wrangle-intro.html) refers to the art of getting your data into R in a useful form for visualization and modeling. & it is *definitely* an art...and a science...and sometimes takes some brute force. It can be a LOT of work; a LOT of HARD work. But `tidyverse()`  and our use of tidy datasets have made this work MUCH, MUCH more predictable and user-friendly.
 
 <center>
 ![Artwork by the *incredible* Alison Horst](media/dplyr_AHorst.jpg)
@@ -164,7 +167,7 @@ renamed_beaver <- tidy_beaver %>%
 ```
 
 
-**`mutate()`** is SUPER versatile function; it can be used to calculate a new value using existing observations and place this value in a new column, it can be used to add a column based on existing observations, to coerce a variable to adifferent type, etc. Below are a few examples of its usefulness!
+**`mutate()`** is SUPER versatile function; it can be used to calculate a new value using existing observations and place this value in a new column, it can be used to add a column based on existing observations, to coerce a variable to a different type, etc. Below are a few examples of its usefulness!
 ```{r}
 # use mutate() to calculate a new value using existing observations and add this new value to a new column
 skidays_per_month <- tidy_beaver %>% # assuming there are 6 months in the ski season
@@ -196,7 +199,7 @@ name_as_factor <- tidy_beaver %>%
 ### Summarizing data: 
 
 
-**`group_by()`** groups observations such that data operations are performed at the level of the group; this is SUPER useful if you want to complete analyses by age class, or fire perimeter class, for instance.
+**`group_by()`** groups observations such that data operations are performed at the level of the group; this is SUPER useful if you want to complete analyses by age class, or year, for instance.
 ```{r}
 grouped_names <- tidy_beaver %>% 
   group_by(name) # notice that nothing appears to change when you view 'grouped_df.' Grouped data is sort of a phantom phenom, the data sits grouped under the hood, but doesn't appear as such in any R interface. Not until you preform some sorta function with the grouped data.... See the summarize() function below.
