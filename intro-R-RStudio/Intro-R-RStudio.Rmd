@@ -37,12 +37,12 @@ output:
 
 There are two main ways one can work within RStudio.
 
-1. Test and play within the interactive R console then copy code into a .R file to run later. (This is a real labor.... and I do NOT recommend it!)
-2. Start writing in an .R file and use RStudio’s shortcut keys for the Run command to push the current line, selected lines or modified lines to the interactive R console. (This is a great way to use R/RStudio cause all of your code is saved & you'll be able to run the file later on!)
+1. Test and play within the interactive R console then copy code into a .R file to run later. (I DO NOT recommend this approach.); and,
+2. Start writing in an .R file and use RStudio’s shortcut keys for the Run command to push the current line, selected lines or modified lines to the interactive R console. (This is a great way to use R/RStudio; by using R/RStudio in this way, all of your code is saved & you will be able to run the file later on.)
 
 # Let's get to know the R interactive console
 
-(We will be typing everything below directly into the R console, but I have included them as code chunks for KEY purposes!)
+(We will be typing everything below directly into the R console, but I have included them as code chunks for reference.)
 
 ### Use R as a calculator
 
@@ -52,8 +52,8 @@ From highest to lowest precedence:
 
 - Parentheses: `(`, `)`
 - Exponents: `^` or `**`
-- Divide: `/`
 - Multiply: `*`
+- Divide: `/`
 - Add: `+`
 - Subtract: `-`
 
@@ -95,7 +95,7 @@ Variable names can contain letters, numbers, underscores and periods. They CANNO
 
 - periods.between.words
 - underscores_between_words
-- camelCaseToSeparateWords
+- CaseToSeparateWords
 
 Your choice of convention is up to , *JUST BE CONSISTENT*.
 
@@ -107,7 +107,7 @@ Collections of R code that make our lives easier--for example, code developed to
 # install.packages("dplyr")
 ```
 
-Once we've downloaded a package, we can use it! R doesn't keep all packages in its working memory, however--it would slow R down to a snail's pace. Instead, we need to "load" the package(s) we are interested in using into our R session. We have to load these package(s) into our R session *each time we open R (or RStudio)*.
+Once we've downloaded a package, we can use it! R doesn't keep all packages in its working memory, however--it would slow R down. Instead, we need to "load" the package(s) we are interested in using into our R session. We have to load these package(s) into our R session *each time we open R (or RStudio)*.
 
 ```{r}
 library(dplyr)
@@ -211,7 +211,7 @@ class(categories)
 
 # Exploring Data Frames
 
-So... what is a dataframe? Think of it like a big ole excel sheet, but housed in R in a very specific way: Where all columns must be of the same type (think... vectors). Dataframes can be massive (think thousands of columns of genetic data), or relatively small, think a dozen columns of information relevant to your research study. Today we are going to work with an R dataset called `gapminder`.
+So... what is a dataframe? Think of it like an excel sheet, but housed in R in a very specific way: Where all columns must be of the same type (think... vectors). Dataframes can be massive (think thousands of columns of genetic data), or relatively small, think a dozen columns of information relevant to a specific research study. Today we are going to work with an R dataset called `gapminder`.
 
 ```{r}
 download.file("https://raw.githubusercontent.com/datacarpentry/r-intro-geospatial/master/_episodes_rmd/data/gapminder_data.csv",
@@ -219,17 +219,16 @@ download.file("https://raw.githubusercontent.com/datacarpentry/r-intro-geospatia
 gapminder <- read.csv("data/gapminder_data.csv")
 ```
 
-Let's check out the data! Data exploration is one of the most important parts of working in R--and it's the first thing you should always do when looking at new data!
+Let's first check out the data. Data exploration is one of the most important parts of working in R--and it's the first thing you should always do when looking at new data.
 ```{r}
 str(gapminder) # str() shows us the structure of the data, including the data type, the dimensions of the dataframe, and a few observations
 
 # we can also examine individual columns using class
 class(gapminder$year) 
 class(gapminder$country)
-str(gapminder$country)
 
 # str(gapminder) said there were 1704 observations of 6 variables.... what will length(gapminder) produce and why?
-length(gapminder) # a fair guess woudl have been the length of the dataframe, 1704, but it gives the number of columns
+length(gapminder) # a fair guess would have been the length of the dataframe, 1704, but it gives the number of columns
 
 class(gapminder)
 
@@ -245,7 +244,7 @@ dim(gapminder)
 # we are going to need to know the names of the columns later, so:
 colnames(gapminder)
 
-# It's a good time to ask ourselves when the structure R is reporting matches our intuitions: does the data type for each column make sense? If not, we need to sort out those issues now so we don't run into issues down the road. Once we're happy with our data types, we can really start digging into our data!
+# It's a good time to ask ourselves when the structure R is reporting matches our intuitions: does the data type for each column make sense? If not, we need to sort out those issues now so we don't run into issues down the road. Once we're happy with our data types, we can really start digging into our data.
 head(gapminder)
 ```
 
@@ -262,7 +261,7 @@ head(gapminder)
 # we definitely don't want to print the entire dataframe each time, so let's put our cbind() command within a call to head() so we only see the first six lines
 head(cbind(gapminder, below_average))
 
-# note that if we try to add a vector of below_average with a different number of entries than the number of rows in our dataframe, it woudl fail:
+# note that if we try to add a vector of below_average with a different number of entries than the number of rows in our dataframe, it would fail:
 #below_average <- c(TRUE, TRUE, TRUE, TRUE, TRUE)
 #head(cbind(gapminder, below_average))
 
@@ -338,9 +337,7 @@ x[4]
 x[c(1, 3)]
 
 # we can also ask for slices
-x[1:4]
-
-# the : operator creates a sequence of numbers from the left element to the right.
+x[1:4] # the : operator creates a sequence of numbers from the left element to the right.
 
 # we can also ask for the same element multiple times
 x[c(1, 1, 3)]
@@ -349,15 +346,13 @@ x[c(1, 1, 3)]
 x[6] # This is a vector of length one containing an NA, whose name is also NA.
 
 x[0] # In many programming languages (C and Python, for example), the first element of a vector has an index of 0. In R, the first element is 1.
-
-
 ```
 
 ### Skipping and removing elements
 
 ```{r}
 # If we use a negative number as the index of a vector, R will return every element except for the one specified:
-x[-2]
+x[-2] # in other words, - means "not"
 
 # we can skip multiple elements
 x[c(-1, -5)]  # or 
@@ -365,7 +360,6 @@ x[-c(1,5)]
 
 # a common mistake would be to ask R
 #x[-1:3] # But remember the order of operations. : is really a function. It takes its first argument as -1, and its second as 3, so generates the sequence of numbers: c(-1, 0, 1, 2, 3).
-
 x[-(1:3)]
 
 # To remove elements from a vector, we need to assign the result back into the variable:
