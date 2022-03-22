@@ -1,5 +1,5 @@
 ---
-title: "CAS ggplot2() Workshop"
+title: "Data Visualization in R: Introduction to {ggplot2} Workshop"
 author: "Britta Schumacher"
 date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
 output: 
@@ -9,19 +9,19 @@ output:
     toc_float: true
 ---
 
-*FIRST*: Many thanks to Alison Horst for her gorgerous [aRt](https://github.com/allisonhorst/stats-illustrations).
+*FIRST*: Many thanks to Alison Horst for the [aRt](https://github.com/allisonhorst/stats-illustrations) included in this document.
 
-# Data Visualization with ggplot2()
+# Data Visualization with `ggplot2`
 
-### What is ggplot2()?
+### What is `ggplot2`?
 
 <center>
 
-![Artwork by the *incredible* Alison Horst](media/ggplot2_AHorst.jpg)
+![Artwork by Alison Horst](media/ggplot2_AHorst.jpg)
 
 </center>
 
-`ggplot2()` is the bread and butter of data visualization; it takes clean, organized, manipulated data, and (with your direction) builds beautiful, & more importantly, *communicative*, plots. `ggplot2` is based on the *grammar of graphics*, which asserts that we can build every graph from the same few components: 1) a clean and tidy **data set**; 2) a set of **geoms** that map out data points; and 3) a **coordinate system** (in the broadest sense; ie. how will the data be mapped onto a graphical surface). To actually display data values, we map out our variables to aesthetic things like **size**, **color**, and **x** and **y** locations; we also tell `ggplot2` the type of visualization we are interested in building (e.g., bar graph, box plot, line graph, density plots, etc.). `ggplot2` opens up [data science](https://r4ds.had.co.nz/introduction.html) to broader audiences and helps all of us communicate our science. Download [this](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf) cheat sheet and save it somewhere accessible--it's an incredible tool to refer back to!
+`ggplot2` is the bread and butter of data visualization; it takes clean, organized, manipulated data, and (with your direction) builds beautiful, & more importantly, *communicative*, plots. `ggplot2` is based on the *grammar of graphics*, which asserts that we can build every graph from the same few components: 1) a clean and tidy **data set**; 2) a set of **geoms** that map out data points; and 3) a **coordinate system** (in the broadest sense; i.e., how will the data be mapped onto a graphical surface). To actually display data values, we map out our variables to aesthetic things like **size**, **color**, and **x** and **y** locations; we also tell `ggplot2` the type of visualization we are interested in building (e.g., bar graph, box plot, line graph, density plots, etc.). `ggplot2` opens up [data science](https://r4ds.had.co.nz/introduction.html) to broader audiences and helps all of us communicate our science better. Download [this](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf) cheat sheet and save it somewhere accessible--it's an important tool to refer back to.
 
 `ggplot2` works with  `data.frames`, the data type we built in our previous `tidyverse` workshop. The data we feed into `ggplot2` consists of rows and columns that "live peacefully" together in a tidy `data.frame`. This means, often, we need to do some data cleaning up front to get our data into the **tidy** format we need for visualization.
 
@@ -128,8 +128,9 @@ ggplot(fav_spp, aes(x = age_group, y = ave, fill = summary_var)) + # fill = summ
   scale_fill_manual(labels = c("Average BMI", "Average Scars", "Average Teeth Lost"), values = c("darkseagreen3", "cadetblue", "orange")) + # change colors and names
   theme_bw() + # change the theme
   theme(panel.border = element_rect(colour = "black", fill = NA, size = 0.7), # change the border color and size
-        axis.text.x = element_text(angle = 45, hjust = 0.9)) + # change the angle of the x axis text, change the horizontal adjustment
-  ggsave("./out-plots/dragon_plot.png") # save the plot
+        axis.text.x = element_text(angle = 45, hjust = 0.9)) # change the angle of the x axis text, change the horizontal adjustment
+  
+ggsave("./out-plots/dragon_plot.png") # save the plot
 
 ```
 
@@ -149,8 +150,9 @@ ggplot(.) + # fill = summary variables
   ggtitle("Chromatic dragon height, weight, and BMI") + # add a title
   labs(x = "Weight (tons)", y = "Height (meters)", color = "Species") + # add labels on the axes and legend
   scale_color_manual(values = c("#44AA99", "#88CCEE", "#DDCC77", "#CC6677", "#117733")) + # change colors and names
-  theme_bw() + # change the theme
-  ggsave("./out-plots/dragon_BMI.png") # save the plot
+  theme_bw() # change the theme
+  
+ggsave("./out-plots/dragon_BMI.png") # save the plot
 
 ```
 
@@ -168,28 +170,29 @@ ggplot(dragons_simple, aes(x = genus_species, y = teeth, fill = genus_species)) 
   scale_fill_brewer(palette = "Dark2") + # use a preset palette
   theme(axis.text.x= element_text(angle = 45, hjust = 1)) + # adjust the angle of the x axis text
   theme(legend.position = "bottom") + # move legend to the bottom
-  guides(fill = guide_legend(nrow=2)) + # give legend two rows
-  ggsave("./out-plots/dragon_BMI.png") # save the plot
+  guides(fill = guide_legend(nrow=2)) # give legend two rows
+  
+ggsave("./out-plots/dragon_BMI.png") # save the plot
 
 ```
 
 ### Plots, plots, plots, plots, plots, plots, plots!
 
-There are just about a bazillion different ways to visualize the same data:
+These are just a few of the **HUNDREDS** of different ways to visualize the same data:
 
 <center>
 
-![Thank you stackoverflow, for this wild viz of all the ways we coulod visualize data about diamonds!](media/ggplots.png)
+![Thank you stackoverflow, for this wild visualization of all the ways we could visualize data about diamonds!](media/ggplots.png)
 
 </center>
 
-... In the end we just have to choose the method that makes the most sense for our audience, our research questions and our data!
+... In the end we just have to choose the method that makes the most sense for our audience, our research questions, and our data!
 
 Additionally, aRtists everywhere are using R to make ridiculously cool pieces of [generative](https://en.wikipedia.org/wiki/Generative_art) and patterned art. Check out some talented RLadies [here](https://ijeamaka-anyene.netlify.app/) and [here](https://djnavarro.net/projects/)! Plus, [#TidyTuesday](https://github.com/rfordatascience/tidytuesday) submissions can be [absolutely](https://tanyadoesscience.com/project/tidytuesday/), [wildly](https://martindevaux.com/2021/01/tidytuesday-art-collections/), [brilliantly](https://codingwithavery.com/posts/2020-08-12-tidy-tuesday-avatar/), good.
 
 # Bonus
 
-What's *especially* neat about `ggplot2` is that it interfaces seamlessly with `sf`, a package for spatial data wrangling, analysis, and viz.`sf` treats its spatial objects as `data.frames` meaning.... we can use all of the magic & power of the `tidyverse` to play with the data! Plus, these data look just like any other data.frame, except attached to them is a column `geometry` that houses the coordinate information for the observation!
+What's *especially* neat about `ggplot2` is that it interfaces seamlessly with `sf`, a package for spatial data wrangling, analysis, and visualization.`sf` treats its spatial objects as `data.frames` meaning.... we can use all of the power of the `tidyverse` to play with the data. Plus, these data look just like any other data.frame, except attached to them is a column of `geometry` that houses the coordinate information for the observation!
 
 Below, we'll take the the EPA air quality data Ellie & Dakoeta gathered and make it spatial for visualization!
 
@@ -229,7 +232,7 @@ ggplot(.) +
   theme_bw()
 ```
 
-There are many, many ways to make maps beautiful in `ggplot` using `sf`. Anyone who says R isn't built for spatial viz just hasn't tried hard enough--check out [this](https://timogrossenbacher.ch/2019/04/bivariate-maps-with-ggplot2-and-sf/) if you don't believe me (just about the most gorgeous, creative, and well-built map I've ever seen).
+There are many, many ways to make maps beautiful in `ggplot` using `sf`. Anyone who says R isn't built for spatial visualization just hasn't tried hard enough--check out [this](https://timogrossenbacher.ch/2019/04/bivariate-maps-with-ggplot2-and-sf/) if you don't believe me (just about the most gorgeous, creative, and well-built map I've ever seen).
 
 # Resources
 * Emily Burchfield's data viz materials, [here](https://www.emilyburchfield.org/courses/data_viz/intro_to_ggplot_tutorial).

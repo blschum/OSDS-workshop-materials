@@ -1,0 +1,12 @@
+---
+title: "RMarkdown: Utility in NSO Context"
+author: "Britta Schumacher"
+date: "Last updated: `r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  html_document:
+    theme: yeti
+    toc: yes
+    toc_float: true
+---
+
+*FIRST*: Many thanks to UCSBs Data Carpentries for their [materials](https://ucsbcarpentry.github.io/Reproducible-Publications-with-RStudio/) which helped immensely in preparing this document.

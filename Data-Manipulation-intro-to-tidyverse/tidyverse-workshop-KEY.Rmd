@@ -388,6 +388,8 @@ c. make it pretty
 **Note:** Only the first 3 lines of the following code are necessary to make the plot. Everything else simply modifies the appearance and make it a bit more presentable. There are *tons* of ways to customize plots -- we explore only a few options below.
 
 ```{r, fig.align = 'center', fig.width = 15, fig.height = 10}
+library(ggplot2)
+
 ggplot(fav_spp, aes(x = age_group, y = ave, fill = summary_var)) + # fill = counts of each phenophase
   geom_col(position = "dodge") + # separate columns for each phenophase (instead of stacked)
   facet_wrap(~genus_species) + # create separate panels for each species
@@ -396,7 +398,8 @@ ggplot(fav_spp, aes(x = age_group, y = ave, fill = summary_var)) + # fill = coun
   scale_fill_manual(labels = c("Average BMI", "Average Scars", "Average Teeth Lost"), values = c("darkseagreen3", "cadetblue", "orange")) + # change colors
   theme_bw() + 
   theme(panel.border = element_rect(colour = "black", fill = NA, size = 0.7), 
-        axis.text.x = element_text(angle = 45, hjust = 0.9)) +
-  ggsave("./out-plots/dragon_plot.png")
+        axis.text.x = element_text(angle = 45, hjust = 0.9))
+
+ggsave("./out-plots/dragon_plot.png", dpi = 300)
 
 ```
