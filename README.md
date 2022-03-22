@@ -7,7 +7,7 @@ Britta Schumacher
 
 ## 2.2. Data Import in R and RStudio Workshop
 
-# DAY #:
+# DAY 3:
 ## 3.1. Data Manipulation in R: Introduction to the {tidyverse} Workshop
 ### Getting started
 If you are participating in the workshop, you may either (a) work on the [tidyverse-workshop-TEMPLATE.Rmd](https://github.com/blschum/OSDS-workshop-materials/blob/main/Data-Manipulation-intro-to-tidyverse/tidyverse-workshop-TEMPLATE.Rmd), which leaves space for participants to type code with instruction, or (b) follow along along in the [tidyverse-workshop-KEY.Rmd](https://github.com/blschum/OSDS-workshop-materials/blob/main/Data-Manipulation-intro-to-tidyverse/tidyverse-workshop-KEY.Rmd), which has all of the information and code we will be working with. Download the [tidyverse-workshop-KEY.html](https://github.com/blschum/OSDS-workshop-materials/blob/main/Data-Manipulation-intro-to-tidyverse/tidyverse-workshop-KEY.html) for a knitted (and much easier to read) version of the KEY.
