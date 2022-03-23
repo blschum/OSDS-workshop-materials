@@ -4,6 +4,8 @@ Britta Schumacher
 
 # DAY 2:
 ## 2.1. Introduction to R and RStudio Workshop
+### Getting started
+If you are participating in the workshop, you....
 
 ## 2.2. Data Import in R and RStudio Workshop
 
